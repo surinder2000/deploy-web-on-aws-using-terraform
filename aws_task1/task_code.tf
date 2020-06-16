@@ -57,7 +57,7 @@ resource "aws_security_group" "webServerFirewall" {
     }
 }
 
-#Launch instance and configure apache webserver
+#Launch ec2 instance and configure apache webserver
 resource "aws_instance" "web" {
 	depends_on = [
         aws_key_pair.newKey,
