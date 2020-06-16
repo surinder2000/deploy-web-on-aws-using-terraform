@@ -291,7 +291,7 @@ resource "null_resource" "showSite" {
     ]
 	
     provisioner "local-exec" {
-        command = "google-chrome http://${aws_instance.web.public_ip}/index.html"
+        command = "firefox http://${aws_instance.web.public_ip}/index.html &"
     }
 
 }
