@@ -4,7 +4,7 @@ provider "aws" {
     profile = "myprofile"
 }
 
-#Generate key
+#Generate a key
 resource "tls_private_key" "keyGenerate" {
     algorithm = "RSA"
 }
