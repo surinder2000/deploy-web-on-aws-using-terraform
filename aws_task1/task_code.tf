@@ -90,7 +90,7 @@ resource "aws_instance" "web" {
     }
 }
 
-#Create EBS
+#Create EBS of size 1GB
 resource "aws_ebs_volume" "ebsWebVol" {
 	depends_on = [
 		aws_instance.web
