@@ -357,18 +357,75 @@ Creating infrastructure for deploying website on AWS cloud using Terraform (Infr
 ### Integrating terraform with Jenkins for launching the infrastructure
 #### Let's start creating the Jenkins jobs
 ##### Job 1. Pull the code from Github repository and copy it to one directory
+* In Source Control Management section put the Github repository url and branch name
+
+![Git configuration](https://github.com/surinder2000/deploy-web-on-aws-using-terraform/blob/master/job11.png)
+
+* In Build trigger section select Poll SCM for checking the github repository every minute
+
+![Build trigger](https://github.com/surinder2000/deploy-web-on-aws-using-terraform/blob/master/job12.png)
+
+* In the Build section from Add build step select Execute shell and put the following code in the command box
+
+![Execute shell](https://github.com/surinder2000/deploy-web-on-aws-using-terraform/blob/master/job13.png)
+
+* Click on Apply and Save
 
 
 ##### Job 2. Install required plugins for launching infrastructure and also validate the code
 
+* In Build trigger section select Build after other projects are built and put the name of Job 1 in the Project to watch box and check Trigger only if build is stable
+
+![Build trigger](https://github.com/surinder2000/deploy-web-on-aws-using-terraform/blob/master/job21.png)
+
+* In the Build section from Add build step select Execute shell and put the following code in the command box
+
+![Execute shell](https://github.com/surinder2000/deploy-web-on-aws-using-terraform/blob/master/job22.png)
+
+* Click on Apply and Save
+
 
 ##### Job 3. Launch infrastructure
+
+* In Build trigger section select Build after other projects are built and put the name of Job 2 in the Project to watch box and check Trigger only if build is stable
+
+![Build trigger](https://github.com/surinder2000/deploy-web-on-aws-using-terraform/blob/master/job31.png)
+
+* In the Build section from Add build step select Execute shell and put the following code in the command box
+
+![Execute shell](https://github.com/surinder2000/deploy-web-on-aws-using-terraform/blob/master/job32.png)
+
+* Click on Apply and Save
 
 
 ##### Job 4. Destroy infrastructure
 
-        
+* In the Build Triggers section select Trigger builds remotely, put Authentication Token in the box, then the following url is used for triggering the job
 
+        JENKINS_URL/job/Destroy%20infrastructure/build?token=TOKEN_NAME
+
+![Build trigger](https://github.com/surinder2000/deploy-web-on-aws-using-terraform/blob/master/job41.png)
+
+* In the Build section from Add build step select Execute shell and put the following code in the command box
+
+![Execute shell](https://github.com/surinder2000/deploy-web-on-aws-using-terraform/blob/master/job42.png)
+
+* Click on Apply and Save
+
+
+  That's it our setup is ready
+  
+  Now as soon as the code is committed from git, it automatically pushed the code into the github repository and Job 1 of the Jenkins triggered which pull the code from Github and copy it into one directory. If Job 1 successfully build then Job 2 triggered and it installs the required plugins for launching infrastructure and validate the code. If Job 2 successfully build then Job 3 triggered and it launches the infrastructure.
+  
+  To destroy the infrastructure just trigger the Job 4 by executing the url provided by Job 4
+  
+  This is the Build pipeline view of the Jenkins jobs
+  
+  ![Build pipeline view](https://github.com/surinder2000/deploy-web-on-aws-using-terraform/blob/master/buildpipelineview.png)
+  
+  
+
+        
 
         
 
