@@ -16,7 +16,7 @@ Creating infrastructure for deploying website on AWS cloud using Terraform (Infr
 * S3 bucket
 * Cloudfront distribution
 
-## Let's get started creating this infrastrucutre
+## Let's start creating the infrastrucutre
 
 1. Create a user profile to access AWS by terraform
 * Run the following command on AWS cli to create user profile
@@ -43,8 +43,8 @@ Creating infrastructure for deploying website on AWS cloud using Terraform (Infr
             depends_on = [
                 tls_private_key.keyGenerate
             ]
-        key_name   = "mykey2"
-        public_key = tls_private_key.keyGenerate.public_key_openssh
+            key_name   = "mykey2"
+            public_key = tls_private_key.keyGenerate.public_key_openssh
         }
 
         resource "local_file" "keySave" {
@@ -338,7 +338,7 @@ Creating infrastructure for deploying website on AWS cloud using Terraform (Infr
         
         terraform init 
         
-   This command download all the required plugins for launching this infrasturcture
+   This command download all the required plugins for launching this infrastructure
 
         terraform validate
         
@@ -352,7 +352,20 @@ Creating infrastructure for deploying website on AWS cloud using Terraform (Infr
 
         terraform destroy -auto-approve
         
-        
+   We can integrate terraform with Jenkins for performing 3 and 4 step. By just committing the code of infrastructure from git, the code will automatically push to Github and the complete process of launching infrastructure will be done by Jenkins. 
+   
+### Integrating terraform with Jenkins for launching the infrastructure
+#### Let's start creating the Jenkins jobs
+##### Job 1. Pull the code from Github repository and copy it to one directory
+
+
+##### Job 2. Install required plugins for launching infrastructure and also validate the code
+
+
+##### Job 3. Launch infrastructure
+
+
+##### Job 4. Destroy infrastructure
 
         
 
