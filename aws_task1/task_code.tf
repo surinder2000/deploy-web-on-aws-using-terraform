@@ -103,7 +103,7 @@ resource "aws_ebs_volume" "ebsWebVol" {
     }
 }
 
-#Attach EBS to instance
+#Attach EBS volume to instance
 resource "aws_volume_attachment" "ebsAttach" {
     depends_on = [
         aws_ebs_volume.ebsWebVol
