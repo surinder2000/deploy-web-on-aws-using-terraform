@@ -16,7 +16,7 @@ Creating infrastructure for deploying website on AWS cloud using Terraform (Infr
 * S3 bucket
 * Cloudfront distribution
 
-## Let's start creating the infrastrucutre
+## Let's start creating the infrastructure
 
 1. Create a user profile to access AWS by terraform
 * Run the following command on AWS cli to create user profile
@@ -88,7 +88,7 @@ Creating infrastructure for deploying website on AWS cloud using Terraform (Infr
             }
         }
 
-* Code fior launching EC2 instance and configure apache webserver
+* Code for launching EC2 instance and configure apache webserver
 
         resource "aws_instance" "web" {
             depends_on = [
