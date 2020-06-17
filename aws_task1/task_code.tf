@@ -59,8 +59,8 @@ resource "aws_security_group" "webServerFirewall" {
 
 #Launch ec2 instance and configure apache webserver
 resource "aws_instance" "web" {
-	depends_on = [
-        aws_key_pair.newKey,
+    depends_on = [
+	aws_key_pair.newKey,
         aws_security_group.webServerFirewall
     ]
 
@@ -69,7 +69,7 @@ resource "aws_instance" "web" {
     key_name =  aws_key_pair.newKey.key_name
     security_groups = [ "${aws_security_group.webServerFirewall.name}" ]
     
-	connection {
+    connection {
         type     = "ssh"
         user     = "ec2-user"
         private_key = tls_private_key.keyGenerate.private_key_pem
@@ -81,8 +81,8 @@ resource "aws_instance" "web" {
             "sudo yum install httpd -y",
             "sudo systemctl start httpd",
             "sudo systemctl enable httpd",
-			"sudo yum install git -y",
-			"sudo setenforce 0"
+	    "sudo yum install git -y",
+	    "sudo setenforce 0"
         ]
     }
     tags = {
@@ -105,14 +105,13 @@ resource "aws_ebs_volume" "ebsWebVol" {
 
 #Attach EBS to instance
 resource "aws_volume_attachment" "ebsAttach" {
-	depends_on = [
+    depends_on = [
         aws_ebs_volume.ebsWebVol
     ]
     device_name = "/dev/sdh"
     volume_id   = aws_ebs_volume.ebsWebVol.id
     instance_id = aws_instance.web.id
-    force_detach = true
-    
+    force_detach = true    
 }
 
 #Mount EBS to /var/www/html
@@ -170,18 +169,18 @@ resource "aws_cloudfront_origin_access_identity" "originAccessIdentity" {
 
 #Create cloudfront distribution for s3 bucket
 resource "aws_cloudfront_distribution" "s3Distribution" {
-	depends_on = [
-		aws_s3_bucket.webBucket,
-		aws_cloudfront_origin_access_identity.originAccessIdentity
-	]
+    depends_on = [
+	aws_s3_bucket.webBucket,
+	aws_cloudfront_origin_access_identity.originAccessIdentity
+    ]
     origin {
         domain_name = aws_s3_bucket.webBucket.bucket_regional_domain_name
         origin_id   = local.s3_origin_id
 
-    s3_origin_config {
-        origin_access_identity = "origin-access-identity/cloudfront/${aws_cloudfront_origin_access_identity.originAccessIdentity.id}"
-    }
-}
+        s3_origin_config {
+            origin_access_identity = "origin-access-identity/cloudfront/${aws_cloudfront_origin_access_identity.originAccessIdentity.id}"
+        }
+    } 
 
     enabled             = true
     is_ipv6_enabled     = true
@@ -191,18 +190,18 @@ resource "aws_cloudfront_distribution" "s3Distribution" {
         cached_methods   = ["GET", "HEAD"]
         target_origin_id = local.s3_origin_id
 
-    forwarded_values {
-      query_string = false
+        forwarded_values {
+            query_string = false
 
-      cookies {
-        forward = "none"
-      }
-    }
+            cookies {
+                forward = "none"
+            }
+        }
 
-    viewer_protocol_policy = "allow-all"
-    min_ttl                = 0
-    default_ttl            = 3600
-    max_ttl                = 86400
+        viewer_protocol_policy = "allow-all"
+        min_ttl                = 0
+        default_ttl            = 3600
+        max_ttl                = 86400
     }
 
     wait_for_deployment = false
@@ -271,7 +270,7 @@ resource "null_resource" "updateURL" {
 
     provisioner "remote-exec" {
         inline = [
-			"sudo sed -i 's|url|https://${aws_cloudfront_distribution.s3Distribution.domain_name}|g' /var/www/html/first.html"
+	    "sudo sed -i 's|url|https://${aws_cloudfront_distribution.s3Distribution.domain_name}|g' /var/www/html/first.html"
         ]
     }
 }
@@ -287,7 +286,7 @@ output "Cloudfrontdomain" {
 resource "null_resource" "showSite" {
     depends_on = [
         aws_cloudfront_distribution.s3Distribution,
-	    null_resource.updateURL
+	null_resource.updateURL
     ]
 	
     provisioner "local-exec" {
