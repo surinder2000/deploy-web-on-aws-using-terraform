@@ -150,7 +150,7 @@ locals {
     s3_origin_id = "S3-surin-bucket"
 }
 
-#Copy static data of web to S3 bucket
+#Copy static data of web pages to S3 bucket
 resource "null_resource" "copyS3" {
     depends_on = [
         aws_s3_bucket.webBucket
