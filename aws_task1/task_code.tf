@@ -10,17 +10,17 @@ resource "tls_private_key" "keyGenerate" {
 }
 
 resource "aws_key_pair" "newKey" {
-	depends_on = [
-		tls_private_key.keyGenerate
-	]
+    depends_on = [
+	tls_private_key.keyGenerate
+    ]
     key_name   = "mykey2"
     public_key = tls_private_key.keyGenerate.public_key_openssh
 }
 
 resource "local_file" "keySave" {
-	depends_on = [
-		tls_private_key.keyGenerate
-	]
+    depends_on = [
+	tls_private_key.keyGenerate
+    ]
     content = tls_private_key.keyGenerate.private_key_pem
     filename = "mykey2.pem"
 }
@@ -92,9 +92,9 @@ resource "aws_instance" "web" {
 
 #Create EBS of size 1GB
 resource "aws_ebs_volume" "ebsWebVol" {
-	depends_on = [
-		aws_instance.web
-	]
+    depends_on = [
+	aws_instance.web
+    ]
     availability_zone = aws_instance.web.availability_zone
     size              = 1
 
@@ -279,7 +279,7 @@ output "Webip" {
 }
 
 output "Cloudfrontdomain" {
-	value = aws_cloudfront_distribution.s3Distribution.domain_name
+    value = aws_cloudfront_distribution.s3Distribution.domain_name
 }
 
 #Show site
